@@ -1,8 +1,6 @@
 # blood_cell_image_CNN_repo
 Blood cell image classification using Convolutional Neural Networks (CNNs) implemented in TensorFlow/Keras
 
-# Blood Cell CNN: White Blood Cell Classification (TensorFlow / Keras)
-
 Deep Learning, Assignment 1. A convolutional neural network, adapted from the
 [TensorFlow CNN tutorial](https://www.tensorflow.org/tutorials/images/cnn), that classifies
 microscope images of single white blood cells into four classes:
