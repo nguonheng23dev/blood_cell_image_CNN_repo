@@ -1,0 +1,9 @@
+# Blood Cell CNN (TensorFlow / Keras)
+# Lower bounds only: the exact versions used for the reported run were not recorded.
+# TensorFlow >= 2.16 ships Keras 3, which the .keras model format and the
+# box-style model.summary() output in results_tf/ come from.
+tensorflow>=2.16
+numpy>=1.24
+pandas>=2.0
+matplotlib>=3.7
+scikit-learn>=1.3
