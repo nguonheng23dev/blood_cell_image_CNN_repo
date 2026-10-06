@@ -51,7 +51,7 @@ Flatten (8,960) -> Dense(128, relu) -> Dropout(0.3) -> Dense(4, softmax)
 The script expects this layout (edit `BASE` at the top of the script if yours differs):
 
 ```
-../BloodCell_Project/datasets/
+../Blood_cell_image_CNN/datasets/
 ├── dataset-master/dataset-master/          # original images
 │   ├── JPEGImages/BloodImage_00000.jpg ...
 │   └── labels.csv
