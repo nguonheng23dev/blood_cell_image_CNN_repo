@@ -11,21 +11,22 @@ microscope images of single white blood cells into four classes:
 
 ---
 
-## Results (single run, seed 42, best checkpoint = epoch 20)
+## Results (single run, seed 42, best checkpoint = epoch 24)
 
 | Evaluation set | Images | Accuracy | Macro F1 | Notes |
 |---|---:|---:|---:|---|
-| Kaggle TEST (internal) | 2,487 | **87.58%** | 0.879 | Most meaningful number |
-| Kaggle originals (`dataset-master`) | 347 | 96.83% | 0.968 | Imbalanced; probably the source of the augmented images |
+| Kaggle TEST (internal) | 2,487 | **87.21%** | 0.876 | Most meaningful number |
+| Kaggle originals (`dataset-master`) | 347 | 95.10% | 0.959 | Imbalanced; probably the source of the augmented images |
 | LISC_dataset test | 996 | 100.00% | 1.000 | **Not independent**: file names match Kaggle TRAIN |
 
-Per-class F1 on the Kaggle TEST set: lymphocyte 0.987, eosinophil 0.879, monocyte 0.848, neutrophil 0.802.
-The model over-predicts neutrophil (precision 0.693, recall 0.954).
+Per-class F1 on the Kaggle TEST set: lymphocyte 0.979, eosinophil 0.882, monocyte 0.848, neutrophil 0.796.
+The model over-predicts neutrophil (precision 0.685, recall 0.950).
 
-Training: loss 1.36 to 0.015, training accuracy 39% to 99.5%. Validation was noisy (accuracy swings
-between 25% and 100%), calmer after the learning rate was reduced. Validation accuracy at the best epoch
-(100%) is about 12 points above Kaggle test accuracy, because validation images are drawn from the same
-augmented pool as the training images. See the report (sections 4.6 and 6.6) for details.
+Training: loss 1.38 to 0.014, training accuracy 37% to 99.6%. Validation was very noisy in the first 16 epochs
+(accuracy swings between 25% and 100%) and calmer after the learning rate was reduced (97.7% or higher from
+epoch 17). Validation accuracy at the best epoch (99.9%) is about 12.7 points above Kaggle test accuracy,
+because validation images are drawn from the same augmented pool as the training images. See the report
+(sections 4.6 and 6.6) for details.
 
 ## Model
 
@@ -40,12 +41,12 @@ Flatten (8,960) -> Dense(128, relu) -> Dropout(0.3) -> Dense(4, softmax)
 | Setting | Value |
 |---|---|
 | Optimizer | Adam, initial learning rate 0.001 |
-| LR schedule | `ReduceLROnPlateau` on `val_loss` (factor 0.5, patience 3, min 1e-5) |
+| LR schedule | `ReduceLROnPlateau` on `val_loss` (factor 0.5, patience 3, min 1e-5); fired three times (0.001 → 0.0005 → 0.00025 → 0.000125) |
 | Loss | Categorical cross-entropy (one-hot labels) |
 | Batch size / epochs | 32 / 25 |
 | Input | Resized to 120x160 (4:3), pixels divided by 255 |
 | Split | Kaggle TRAIN: 85% train / 15% validation, stratified |
-| Checkpoint | Lowest validation loss (`best_model.keras`) |
+| Checkpoint | Lowest validation loss (`best_model.keras`, epoch 24, val loss 0.0016) |
 
 ## Datasets
 
@@ -87,6 +88,9 @@ A GPU is optional; training runs on CPU but is slower.
 python blood_cell_image_cnn_tf.py
 ```
 
+The same pipeline is also available as a notebook (`Assignment1_BloodCell_CNN_Updated.ipynb`, with Colab
+Drive-mount and download helpers).
+
 The script runs the full pipeline and writes everything to `results_tf/`. It is organized in cells that
 follow the assignment tasks:
 
@@ -120,16 +124,17 @@ follow the assignment tasks:
 
 The script sets the Python, NumPy and TensorFlow seeds to 42 and enables TensorFlow op determinism, so
 results should be repeatable on the same hardware and library versions. Different GPUs, TensorFlow
-versions, or file orderings can change the numbers slightly. Results come from a single run; repeating
-with several seeds would give a range.
+versions, or file orderings can change the numbers slightly (earlier runs of this project gave
+87.58% and 88.08% on Kaggle TEST). Results above come from a single run; repeating with several seeds
+would give a range.
 
 ## Limitations
 
 - The Kaggle TRAIN and TEST images are augmented copies of the same source cells, so Kaggle test accuracy is likely optimistic.
-- The validation set shares near-duplicates with the training set, so validation accuracy (up to 100%) overstates performance. The checkpoint is chosen on a very noisy validation curve.
+- The validation set shares near-duplicates with the training set, so validation accuracy (up to 100%) overstates performance. The checkpoint is chosen on a validation curve that was very noisy for most of training.
 - LISC_dataset overlaps the Kaggle training data (its 100% score is not evidence of generalization).
 - The 347 original images are strongly imbalanced (20 monocytes, 33 lymphocytes, 206 neutrophils).
-- Grad-CAM was checked on only 8 images and sometimes highlights red cells or image corners rather than the white cell.
+- Grad-CAM was checked on only 8 images; in some cases it highlights red cells instead of the white cell, and for several images the heatmap is diffuse.
 - No confusion matrix is saved by the script (neutrophil confusions in the report are estimated from precision and recall).
 - Not a medical device; for coursework only.
 
