@@ -88,7 +88,7 @@ A GPU is optional; training runs on CPU but is slower.
 python blood_cell_image_cnn_tf.py
 ```
 
-The same pipeline is also available as a notebook (`Assignment1_BloodCell_CNN_Updated.ipynb`, with Colab
+The same pipeline is also available as a notebook (`Assignment1_BloodCell_CNN.ipynb`, with Colab
 Drive-mount and download helpers).
 
 The script runs the full pipeline and writes everything to `results_tf/`. It is organized in cells that
@@ -147,4 +147,4 @@ would give a range.
 
 ## Report
 
-The full write-up is in `BloodCell_CNN_Report_Updated.docx`.
+The full write-up is in `BloodCell_CNN_Report.pdf`.
