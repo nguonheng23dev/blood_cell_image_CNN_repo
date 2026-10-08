@@ -1,0 +1,9 @@
+Epochs run                          : 25
+1) Train loss  first -> last        : 1.3829 -> 0.0137  (99.0% decrease)
+   Val loss    first -> last        : 5.7949 -> 0.0180
+2) Train loss change, last 5 epochs : 0.0020
+   Val loss std, last 5 epochs     : 0.0063
+3) Lowest val loss                  : 0.0016 at epoch 24
+4) First epoch within 2% of best    : Epoch 24
+5) Val-loss spikes (>10% jump)      : 13
+   Train/val accuracy at the end    : 0.9960 / 0.9933

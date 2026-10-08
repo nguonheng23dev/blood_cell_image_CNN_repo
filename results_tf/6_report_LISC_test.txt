@@ -1,0 +1,11 @@
+accuracy 1.0000
+              precision    recall  f1-score   support
+
+  EOSINOPHIL      1.000     1.000     1.000       271
+  LYMPHOCYTE      1.000     1.000     1.000       222
+    MONOCYTE      1.000     1.000     1.000       263
+  NEUTROPHIL      1.000     1.000     1.000       240
+
+    accuracy                          1.000       996
+   macro avg      1.000     1.000     1.000       996
+weighted avg      1.000     1.000     1.000       996
